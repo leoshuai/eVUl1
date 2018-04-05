@@ -8,7 +8,7 @@ j=0;
 k=0;%The iteration index
 while (1)
     alpha=tau/mu;
-    w=x-1/mu *dqx;
+    w=x-(1/mu) *dqx;
     p(w>alpha)=w(w>alpha)-alpha;
     p(w<-alpha)=w(w<-alpha)+alpha;
     mx_mp=dqx'*(x-p)+tau*(norm(x,1)-norm(p,1));
@@ -27,12 +27,11 @@ while (1)
     end
     if (j <1)
         xplus = p;
-       % fprintf('Warning: Uk  is vacuous \n');
+        % fprintf('Warning: Uk  is vacuous \n');
     else
         Q=U(:,j)'*M*U(:,j);
         ud=linsolve(Q,-U(:,j)'*g);
         xplus=p+U(:,j)*ud;
-        fprintf(' dim Uk=%d \n',j);
     end
     if f(x)-f(xplus)>=pr.sigma *mx_mp
         %Update mu
@@ -50,6 +49,7 @@ while (1)
     else
         mu=mu*2;
     end
+    fprintf(' dim Uk=%d \n',j);
     j=0;
     U=zeros(n,n);
     p=zeros(n,1);
